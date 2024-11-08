@@ -1,0 +1,17 @@
+﻿@model TP6.Models.Producto
+
+@{
+    ViewData["Title"] = "Eliminar Producto";
+}
+
+<h1>Eliminar Producto</h1>
+
+<p>Esta seguro de que desea elimianr el producto <span class="fw-bold">@Model.Description</span> ?</p>
+<form asp-controller="Producto" asp-action="Delete" method="post">
+    <input asp-for="IdProduct" type="hidden" value="@Model.IdProduct" />
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-danger">Borrar</button>
+    </div>
+</form>
+
+<a asp-controller="Producto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
