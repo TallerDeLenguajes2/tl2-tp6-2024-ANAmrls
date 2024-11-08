@@ -1,0 +1,28 @@
+﻿@model IEnumerable<TP6.Models.Producto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Listado de Productos</h1>
+
+<table class="table table-striped table-dark">
+    <caption>Lista de productos</caption>
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producto in Model)
+        {
+            <tr>
+                <td>@producto.IdProduct</td>
+                <td>@producto.Description</td>
+                <td>@producto.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
