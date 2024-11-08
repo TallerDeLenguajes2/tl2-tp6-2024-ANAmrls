@@ -1,7 +1,12 @@
+using TP6.Repositorios;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IPresupuestosRepository, PresupuestosRepository>();
 
 var app = builder.Build();
 
