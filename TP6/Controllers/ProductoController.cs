@@ -41,9 +41,9 @@ namespace TP6.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProducto(int idProducto, Producto producto)
+        public ActionResult EditProducto(Producto producto)
         {
-            _productoRepository.UpdateProducto(idProducto, producto);
+            _productoRepository.UpdateProducto(producto.IdProduct, producto);
             return RedirectToAction("Index");
         }
 

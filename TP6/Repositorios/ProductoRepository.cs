@@ -87,6 +87,7 @@ namespace TP6.Repositorios
 
                 if (reader.Read())
                 {
+                    producto.IdProduct = Convert.ToInt32(reader["idProducto"]);
                     producto.Description = reader["Descripcion"].ToString();
                     producto.Price = Convert.ToInt32(reader["Precio"]);
                 }

@@ -1,0 +1,22 @@
+﻿@model TP6.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<h1>Modificar de Producto</h1>
+
+<form asp-controller="Producto" asp-action="EditProducto" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Description">Descripción</label>
+        <input asp-for="Description" class="form-control" id="descripcion" value="@Model.Description">
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Price">Precio</label>
+        <input asp-for="Price" class="form-control" value="@Model.Price">
+    </div>
+   <input asp-for="IdProduct" type="hidden" value="@Model.IdProduct"/>
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary">Modificar</button>
+    </div>
+</form>
