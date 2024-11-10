@@ -8,6 +8,8 @@ namespace TP6.Repositorios
         void CreatePresupuesto(Presupuesto presupuesto);
         void DeletePresupuestoById(int idPresupuesto);
         List<Presupuesto> GetPresupuestos();
-        Presupuesto GetPresupuestoById(int id);
+        Presupuesto GetDetallePresupuestoById(int id);
+        Presupuesto GetPresupuestoById(int idPresupuesto);
+        void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto);
     }
 }

@@ -100,6 +100,35 @@ namespace TP6.Repositorios
             {
                 connection.Open();
 
+                var consulta = "SELECT * FROM Presupuestos WHERE idPresupuesto = (@idPresupuesto);";
+
+                SqliteCommand command = new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+                var reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    DateOnly fecha = new();
+                    DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
+                    presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
+                    presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
+                    presupuesto.FechaCreacion = fecha;
+                }
+
+                connection.Close();
+            }
+
+            return presupuesto;
+        }
+
+        public Presupuesto GetDetallePresupuestoById(int idPresupuesto)
+        {
+            Presupuesto presupuesto = new();
+
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
                 var consulta = "SELECT P.idPresupuesto, P.NombreDestinatario, P.FechaCreacion, PR.idProducto, PR.Descripcion "
                                + "AS Producto, PR.Precio, PD.Cantidad, (PR.Precio * PD.Cantidad) AS Subtotal "
                                + "FROM Presupuestos P "
@@ -143,6 +172,25 @@ namespace TP6.Repositorios
             }
 
             return presupuesto;
+        }
+
+        public void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto)
+        {
+            using(var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var consulta = "UPDATE Presupuestos "
+                               + "SET NombreDestinatario = (@NuevoDestinatario) "
+                               + "WHERE idPresupuesto = (@idPresupuesto);";
+                SqliteCommand command =new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@NuevoDestinatario", presupuesto.NombreDestinatario));
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
         }
     }
 }
