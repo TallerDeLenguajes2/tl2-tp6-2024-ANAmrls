@@ -1,0 +1,17 @@
+﻿@model TP6.Models.Presupuesto
+
+@{
+    ViewData["Title"] = "Eliminar Presupuesto";
+}
+
+<h1>Eliminar Presupuesto</h1>
+
+<p>Esta seguro de que desea elimianr el presupuesto para <span class="fw-bold">@Model.NombreDestinatario</span>?</p>
+<form asp-controller="Presupuesto" asp-action="Delete" method="post">
+    <input asp-for="IdPresupuesto" type="hidden" value="@Model.IdPresupuesto" />
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-danger">Borrar</button>
+    </div>
+</form>
+
+<a asp-controller="Presupuesto" asp-action="Index" class="btn btn-secondary">Cancelar</a>
