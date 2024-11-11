@@ -18,7 +18,7 @@ namespace TP6.Repositorios
 
                 SqliteCommand command = new(consulta, connection);
                 command.Parameters.Add(new SqliteParameter("@NombreDestinatario", presupuesto.NombreDestinatario));
-                command.Parameters.Add(new SqliteParameter("@FechaCreacion", presupuesto.FechaCreacion));
+                command.Parameters.Add(new SqliteParameter("@FechaCreacion", DateOnly.FromDateTime(presupuesto.FechaCreacion)));
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -38,14 +38,11 @@ namespace TP6.Repositorios
                 var reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    
-                    DateOnly fecha = new();
-                    DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
                     var presupuesto = new Presupuesto
                     {
                         IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
                         NombreDestinatario = reader["NombreDestinatario"].ToString(),
-                        FechaCreacion = fecha
+                        FechaCreacion = DateTime.Parse((string)reader["FechaCreacion"]),
                     };
 
                     presupuestos.Add(presupuesto);
@@ -108,11 +105,9 @@ namespace TP6.Repositorios
 
                 if (reader.Read())
                 {
-                    DateOnly fecha = new();
-                    DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
                     presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
                     presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
-                    presupuesto.FechaCreacion = fecha;
+                    presupuesto.FechaCreacion = DateTime.Parse((string)reader["FechaCreacion"]);
                 }
 
                 connection.Close();
@@ -142,13 +137,11 @@ namespace TP6.Repositorios
 
                 while (reader.Read())
                 {
-                    if (presupuesto.NombreDestinatario == null || presupuesto.FechaCreacion == new DateOnly(1, 1, 1))
+                    if (presupuesto.NombreDestinatario == null)
                     {
-                        DateOnly fecha = new();
-                        DateOnly.TryParseExact((string?)reader["FechaCreacion"], "yyyy-MM-dd", out fecha);
                         presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
                         presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
-                        presupuesto.FechaCreacion = fecha;
+                        presupuesto.FechaCreacion = DateTime.Parse((string)reader["FechaCreacion"]);
                         presupuesto.Detalle = new List<PresupuestoDetalle>();
                     }
 

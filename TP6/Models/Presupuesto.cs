@@ -1,4 +1,7 @@
-﻿namespace TP6.Models
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+
+namespace TP6.Models
 {
     public class Presupuesto
     {
@@ -6,9 +9,9 @@
         private int idPresupuesto;
         private string nombreDestinatario;
         List<PresupuestoDetalle> detalle;
-        private DateOnly fechaCreacion = new(1, 1, 1);
+        private DateTime fechaCreacion;
 
-        public Presupuesto(string nombreDestinatario, DateOnly fechaCreacion)
+        public Presupuesto(string nombreDestinatario, DateTime fechaCreacion)
         {
             this.nombreDestinatario = nombreDestinatario;
             this.FechaCreacion = fechaCreacion;
@@ -22,7 +25,7 @@
         public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
         public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
         public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
-        public DateOnly FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+        public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
         public float MontoPresupuesto()
         {
             float monto = 0f;

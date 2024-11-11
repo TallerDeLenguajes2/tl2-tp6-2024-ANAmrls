@@ -21,10 +21,11 @@
     <tbody>
         @foreach (var presupuesto in Model)
         {
+            var fecha = DateOnly.FromDateTime(presupuesto.FechaCreacion);
             <tr>
                 <td>@presupuesto.IdPresupuesto</td>
                 <td>@presupuesto.NombreDestinatario</td>
-                <td>@presupuesto.FechaCreacion</td>
+                <td>@fecha</td>
                 <td><a asp-controller="Presupuesto" asp-action="GetDetalle" asp-route-idProducto="@presupuesto.IdPresupuesto" class="btn btn-info">Detalles</a></td>
                 <td><a asp-controller="Presupuesto" asp-action="AddProducto" asp-route-idProducto="@presupuesto.IdPresupuesto" class="btn btn-info">Agregar</a></td>
                 <td><a asp-controller="Presupuesto" asp-action="EditPresupuesto" asp-route-idProducto="@presupuesto.IdPresupuesto" class="btn btn-info">Modificar</a></td>
