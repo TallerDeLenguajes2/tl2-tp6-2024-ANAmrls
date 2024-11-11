@@ -20,6 +20,7 @@ namespace TP6.Models
 
         public Presupuesto()
         {
+            this.detalle = new();
         }
 
         public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
@@ -29,6 +30,11 @@ namespace TP6.Models
         public float MontoPresupuesto()
         {
             float monto = 0f;
+
+            if (detalle == null)
+            {
+                return monto;
+            }
 
             foreach (var det in detalle)
             {

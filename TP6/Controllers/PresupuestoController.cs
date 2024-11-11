@@ -64,7 +64,13 @@ namespace TP6.Controllers
         [HttpGet]
         public ActionResult GetDetalle(int idPresupuesto)
         {
-            return View(_presupuestoRepository.GetDetallePresupuestoById(idPresupuesto));
+            var presupuesto = _presupuestoRepository.GetDetallePresupuestoById(idPresupuesto);
+
+            if (presupuesto.IdPresupuesto == 0 || presupuesto.NombreDestinatario == null)
+            {
+                return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
+            }
+            return View(presupuesto);
         }
 
         [HttpGet]

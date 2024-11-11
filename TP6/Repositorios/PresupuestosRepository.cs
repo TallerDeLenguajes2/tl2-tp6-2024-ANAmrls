@@ -185,5 +185,23 @@ namespace TP6.Repositorios
                 connection.Close();
             }
         }
+
+        public void QuitarProducto(int idPresupuesto, int idProducto)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var consulta = "DELETE FROM PresupuestosDetalle "
+                               + "WHERE idPresupuesto = (@idPresupuesto) AND idProducto = (@idProducto);";
+
+                SqliteCommand command = new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+                command.Parameters.Add(new SqliteParameter("@idProducto", idProducto));
+                command.ExecuteNonQuery();
+
+                connection.Close();
+            }
+        }
     }
 }
