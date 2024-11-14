@@ -1,0 +1,27 @@
+﻿@model TP6.Models.Presupuesto
+
+@{
+    ViewData["Title"] = "Agregar Producto";
+}
+
+<h1>Agregar un producto</h1>
+
+<form asp-controller="Presupuesto" asp-action="AddProducto" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="IdPresupuesto">ID del Presupuesto</label>
+        <input asp-for="IdPresupuesto" class="form-control" value="@Model.IdPresupuesto" readonly>
+    </div>
+    <div class="form-group mb-3">
+        <label for="cantidad">Cantidad</label>
+        <input id="cantidad" name="cantidad" type="number" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+        <label for="idProducto">ID del producto</label>
+        <input id="idProducto" name="idProducto" type="number" class="form-control">
+    </div>
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+    </div>
+</form>
+
+<a asp-controller="Presupuesto" asp-action="Index" class="btn btn-dark btn-lg">Volver al listado</a>

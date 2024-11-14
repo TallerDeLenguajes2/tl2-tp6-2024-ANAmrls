@@ -58,15 +58,29 @@ namespace TP6.Repositorios
         {
             using (var connection = new SqliteConnection(connectionString))
             {
-                connection.Open();
+                string consulta;
 
-                var consulta = "INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, Cantidad) "
+                int cantidad = GetCantidadProducto(idPresupuesto, detalle.Producto.IdProduct);
+
+                if (cantidad > 0)
+                {
+                    consulta = "UPDATE PresupuestosDetalle "
+                               + "SET Cantidad = (@Cantidad) "
+                               + "WHERE idPresupuesto = (@idPresupuesto) AND idProducto = (@idProducto);";
+                }
+                else
+                {
+                    consulta = "INSERT INTO PresupuestosDetalle (idPresupuesto, idProducto, Cantidad) "
                                + "VALUES (@idPresupuesto, @idProducto, @Cantidad);";
+                }
 
+                cantidad += detalle.Cantidad;
+
+                connection.Open();
                 SqliteCommand command = new(consulta, connection);
                 command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
                 command.Parameters.Add(new SqliteParameter("@idProducto", detalle.Producto.IdProduct));
-                command.Parameters.Add(new SqliteParameter("@Cantidad", detalle.Cantidad));
+                command.Parameters.Add(new SqliteParameter("@Cantidad", cantidad));
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -202,6 +216,34 @@ namespace TP6.Repositorios
 
                 connection.Close();
             }
+        }
+
+        public int GetCantidadProducto(int idPresupuesto, int idProducto)
+        {
+            int cantidad = 0;
+
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var consulta = "SELECT cantidad "
+                               + "FROM PresupuestosDetalle "
+                               + "WHERE idPresupuesto = (@idPresupuesto) AND idProducto = (@idProducto);";
+
+                SqliteCommand command = new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+                command.Parameters.Add(new SqliteParameter("@idProducto", idProducto));
+                var reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    cantidad = Convert.ToInt32(reader["Cantidad"]);
+                }
+
+                connection.Close();
+            }
+
+            return cantidad;
         }
     }
 }

@@ -7,10 +7,12 @@ namespace TP6.Controllers
     public class PresupuestoController : Controller
     {
         private readonly IPresupuestosRepository _presupuestoRepository;
+        private readonly IProductoRepository _productoRepository;
 
-        public PresupuestoController(IPresupuestosRepository presupuestoRepository)
+        public PresupuestoController(IPresupuestosRepository presupuestoRepository, IProductoRepository productoRepository)
         {
             _presupuestoRepository = presupuestoRepository;
+            _productoRepository = productoRepository;
         }
 
         public ActionResult Index()
@@ -55,10 +57,13 @@ namespace TP6.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddProducto(int idPresupuesto, PresupuestoDetalle detalle)
+        public ActionResult AddProducto(int idPresupuesto, [FromForm] int cantidad, [FromForm] int idProducto)
         {
+            var producto = _productoRepository.GetProductoById(idProducto);
+            PresupuestoDetalle detalle = new(producto, cantidad);            
             _presupuestoRepository.AddProducto(idPresupuesto, detalle);
-            return RedirectToAction("AddProducto", idPresupuesto);
+
+            return RedirectToAction("AddProducto", _presupuestoRepository.GetPresupuestoById(idPresupuesto));
         }
 
         [HttpGet]
