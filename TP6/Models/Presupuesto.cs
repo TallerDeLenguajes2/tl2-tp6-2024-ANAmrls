@@ -1,21 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-
-namespace TP6.Models
+﻿namespace TP6.Models
 {
     public class Presupuesto
     {
         private const float Iva = 1.21f;
         private int idPresupuesto;
-        private string nombreDestinatario;
+        private Cliente cliente;
         List<PresupuestoDetalle> detalle;
         private DateTime fechaCreacion;
 
-        public Presupuesto(string nombreDestinatario, DateTime fechaCreacion)
+        public Presupuesto(string nombreDestinatario, DateTime fechaCreacion, Cliente cliente)
         {
-            this.nombreDestinatario = nombreDestinatario;
             this.FechaCreacion = fechaCreacion;
             this.detalle = new();
+            this.cliente = cliente;
         }
 
         public Presupuesto()
@@ -24,9 +21,10 @@ namespace TP6.Models
         }
 
         public int IdPresupuesto { get => idPresupuesto; set => idPresupuesto = value; }
-        public string NombreDestinatario { get => nombreDestinatario; set => nombreDestinatario = value; }
         public List<PresupuestoDetalle> Detalle { get => detalle; set => detalle = value; }
         public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+        public Cliente Cliente { get => cliente; set => cliente = value; }
+
         public float MontoPresupuesto()
         {
             float monto = 0f;
