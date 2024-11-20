@@ -1,0 +1,17 @@
+﻿@model TP6.Models.Cliente
+
+@{
+    ViewData["Title"] = "Eliminar Cliente";
+}
+
+<h1>Eliminar Cliente</h1>
+
+<p>Esta seguro de que desea elimianr el cliente <span class="fw-bold">@Model.Nombre</span> ?</p>
+<form asp-controller="Cliente" asp-action="Delete" method="post">
+    <input asp-for="IdCliente" type="hidden" value="@Model.IdCliente" />
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-danger">Borrar</button>
+    </div>
+</form>
+
+<a asp-controller="Cliente" asp-action="Index" class="btn btn-secondary">Cancelar</a>

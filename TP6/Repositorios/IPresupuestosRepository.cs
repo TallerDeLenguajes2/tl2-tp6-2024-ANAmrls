@@ -10,7 +10,7 @@ namespace TP6.Repositorios
         List<Presupuesto> GetPresupuestos();
         Presupuesto GetDetallePresupuestoById(int id);
         Presupuesto GetPresupuestoById(int idPresupuesto);
-        void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto);
+        //void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto);
         void QuitarProducto(int idPresupuesto, int idProducto);
         public int GetCantidadProducto(int idPresupuesto, int idProducto);
     }

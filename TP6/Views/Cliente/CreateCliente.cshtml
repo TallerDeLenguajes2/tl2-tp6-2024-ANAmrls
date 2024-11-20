@@ -1,0 +1,25 @@
+﻿@model TP6.Models.Cliente
+
+@{
+    ViewData["Title"] = "Alta de Cliente";
+}
+
+<h1>Alta de Cliente</h1>
+
+<form asp-controller="Cliente" asp-action="CreateCliente" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Nombre">Nombre</label>
+        <input asp-for="Nombre" class="form-control" >
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control">
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Telefono">Teléfono</label>
+        <input asp-for="Telefono" class="form-control">
+    </div>
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary">Crear</button>
+    </div>
+</form>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Detalles del Presupuesto";
 }
 
-<h1>Presupuesto para: @Model.NombreDestinatario</h1>
+<h1>Presupuesto para: @Model.Cliente.Nombre</h1>
 <p>Fecha de Creación: @Model.FechaCreacion</p>
 <p>Monto Total: @Model.MontoPresupuesto()</p>
 <p>Total con IVA: @Model.MontoPresupuestoConIva()</p>
@@ -26,6 +26,7 @@
                 <td>@detalle.Producto.Description</td>
                 <td>@detalle.Producto.Price</td>
                 <td>@detalle.Cantidad</td>
+                <td>subtotal</td>
             </tr>
         }
     </tbody>

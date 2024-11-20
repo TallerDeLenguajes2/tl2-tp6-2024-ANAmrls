@@ -35,19 +35,19 @@ namespace TP6.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public ActionResult EditPresupuesto(int idPresupuesto)
-        {
-            return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
-        }
+        //[HttpGet]
+        //public ActionResult EditPresupuesto(int idPresupuesto)
+        //{
+        //    return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
+        //}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult EditPresupuesto(Presupuesto presupuesto)
-        {
-            _presupuestoRepository.UpdatePresupuesto(presupuesto.IdPresupuesto, presupuesto);
-            return RedirectToAction("Index");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult EditPresupuesto(Presupuesto presupuesto)
+        //{
+        //    _presupuestoRepository.UpdatePresupuesto(presupuesto.IdPresupuesto, presupuesto);
+        //    return RedirectToAction("Index");
+        //}
 
         [HttpGet]
         public ActionResult AddProducto(int idPresupuesto)
@@ -71,7 +71,7 @@ namespace TP6.Controllers
         {
             var presupuesto = _presupuestoRepository.GetDetallePresupuestoById(idPresupuesto);
 
-            if (presupuesto.IdPresupuesto == 0 || presupuesto.NombreDestinatario == null)
+            if (presupuesto.IdPresupuesto == 0)
             {
                 return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
             }

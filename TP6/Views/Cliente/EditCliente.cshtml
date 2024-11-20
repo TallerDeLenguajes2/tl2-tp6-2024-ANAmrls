@@ -1,0 +1,26 @@
+﻿@model TP6.Models.Cliente
+
+@{
+    ViewData["Title"] = "Editar Cliente";
+}
+
+<h1>Modificar Cliente</h1>
+
+<form asp-controller="Cliente" asp-action="EditCliente" method="post">
+    <div class="form-group mb-3">
+        <label asp-for="Nombre">Nombre</label>
+        <input asp-for="Nombre" class="form-control" value="@Model.Nombre">
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" value="@Model.Email">
+    </div>
+    <div class="form-group mb-3">
+        <label asp-for="Telefono">Teléfono</label>
+        <input asp-for="Telefono" class="form-control" value="@Model.Telefono">
+    </div>
+    <input asp-for="IdCliente" type="hidden" value="@Model.IdCliente" />
+    <div class="form-group mb-2">
+        <button type="submit" class="btn btn-primary">Modificar</button>
+    </div>
+</form>
