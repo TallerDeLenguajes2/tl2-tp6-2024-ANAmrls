@@ -8,7 +8,7 @@
         List<PresupuestoDetalle> detalle;
         private DateTime fechaCreacion;
 
-        public Presupuesto(string nombreDestinatario, DateTime fechaCreacion, Cliente cliente)
+        public Presupuesto(DateTime fechaCreacion, Cliente cliente)
         {
             this.FechaCreacion = fechaCreacion;
             this.detalle = new();

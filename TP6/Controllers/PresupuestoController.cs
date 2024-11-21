@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TP6.Models;
 using TP6.Repositorios;
+using TP6.ViewModels;
 
 namespace TP6.Controllers
 {
@@ -8,11 +9,13 @@ namespace TP6.Controllers
     {
         private readonly IPresupuestosRepository _presupuestoRepository;
         private readonly IProductoRepository _productoRepository;
+        private readonly IClienteRepository _clienteRepository;
 
-        public PresupuestoController(IPresupuestosRepository presupuestoRepository, IProductoRepository productoRepository)
+        public PresupuestoController(IPresupuestosRepository presupuestoRepository, IProductoRepository productoRepository, IClienteRepository clienteRepository)
         {
             _presupuestoRepository = presupuestoRepository;
             _productoRepository = productoRepository;
+            _clienteRepository = clienteRepository;
         }
 
         public ActionResult Index()
@@ -24,13 +27,16 @@ namespace TP6.Controllers
         [HttpGet]
         public ActionResult CreatePresupuesto()
         {
-            return View();
+            Presupuesto presupuesto = new();
+            CreatePresupuestoViewModel presupuestoVM = new(presupuesto, _clienteRepository.GetClientes());
+            return View(presupuestoVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreatePresupuesto(Presupuesto presupuesto)
+        public ActionResult CreatePresupuesto(CreatePresupuestoViewModel presupuestoVM)
         {
+            Presupuesto presupuesto = new(presupuestoVM.FechaCreacion, _clienteRepository.GetClienteById(presupuestoVM.IdCliente));
             _presupuestoRepository.CreatePresupuesto(presupuesto);
             return RedirectToAction("Index");
         }

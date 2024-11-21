@@ -1,4 +1,4 @@
-﻿@model TP6.Models.Presupuesto
+﻿@model TP6.ViewModels.CreatePresupuestoViewModel
 
 @{
     ViewData["Title"] = "Alta de Presupuesto";
@@ -12,6 +12,13 @@
         <label asp-for="FechaCreacion">Fecha de Creación</label>
         <input asp-for="FechaCreacion" type="datetime" value="@DateTime.Today" class="form-control" readonly>
     </div>
+    <div class="form-group mb-3">
+        <label asp-for="IdCliente">Cliente</label>
+        <select class="form-select mb-3" name="idCliente" asp-for="IdCliente" asp-items="@Model.Options">
+            <option selected>Seleccione un cliente</option>
+        </select>
+    </div>
+    
     <div class="form-group mb-2">
         <button type="submit" class="btn btn-primary">Crear</button>
     </div>
