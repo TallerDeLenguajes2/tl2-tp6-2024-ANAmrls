@@ -58,18 +58,19 @@ namespace TP6.Controllers
         [HttpGet]
         public ActionResult AddProducto(int idPresupuesto)
         {
-            return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
+            AddProductoViewModel productoVM = new(_presupuestoRepository.GetPresupuestoById(idPresupuesto), _productoRepository.GetProductos());
+            return View(productoVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddProducto(int idPresupuesto, [FromForm] int cantidad, [FromForm] int idProducto)
+        public ActionResult AddProducto(AddProductoViewModel addProductoVM)
         {
-            var producto = _productoRepository.GetProductoById(idProducto);
-            PresupuestoDetalle detalle = new(producto, cantidad);            
-            _presupuestoRepository.AddProducto(idPresupuesto, detalle);
+            var producto = _productoRepository.GetProductoById(addProductoVM.IdProducto);
+            PresupuestoDetalle detalle = new(producto, addProductoVM.Cantidad);            
+            _presupuestoRepository.AddProducto(addProductoVM.IdPresupuesto, detalle);
 
-            return RedirectToAction("AddProducto", _presupuestoRepository.GetPresupuestoById(idPresupuesto));
+            return RedirectToAction("AddProducto", _presupuestoRepository.GetPresupuestoById(addProductoVM.IdPresupuesto));
         }
 
         [HttpGet]

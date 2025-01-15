@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TP6.Models;
 using TP6.Repositorios;
+using TP6.ViewModels;
 
 namespace TP6.Controllers
 {
@@ -27,8 +28,15 @@ namespace TP6.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateProducto(Producto producto)
+        public ActionResult CreateProducto(ProductoViewModel productoVM)
         {
+            if(!ModelState.IsValid) return RedirectToAction("Index");
+
+            Producto producto = new()
+            {
+                Description = productoVM.Descripcion ?? "",
+                Price = productoVM.Precio
+            };
             _productoRepository.CreateProducto(producto);
             return RedirectToAction("Index");
         }

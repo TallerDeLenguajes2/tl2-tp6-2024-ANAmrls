@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TP6.Models;
 using TP6.Repositorios;
+using TP6.ViewModels;
 
 namespace TP6.Controllers
 {
@@ -27,8 +28,11 @@ namespace TP6.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCliente(Cliente cliente)
+        public ActionResult CreateCliente(ClienteViewModel clienteVM)
         {
+            if (!ModelState.IsValid) return RedirectToAction("Index");
+
+            var cliente = new Cliente(clienteVM);
             _clienteRepository.CreateCliente(cliente);
             return RedirectToAction("Index");
         }

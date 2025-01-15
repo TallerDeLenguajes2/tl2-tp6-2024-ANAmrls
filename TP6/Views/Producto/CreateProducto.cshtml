@@ -1,4 +1,4 @@
-﻿@model TP6.Models.Producto
+﻿@model TP6.ViewModels.ProductoViewModel
 
 @{
     ViewData["Title"] = "Alta de Producto";
@@ -8,14 +8,20 @@
 
 <form asp-controller="Producto" asp-action="CreateProducto" method="post">
     <div class="form-group mb-3">
-        <label asp-for="Description">Descripción</label>
-        <input asp-for="Description" class="form-control" id="descripcion">
+        <label asp-for="Descripcion">Descripción</label>
+        <input asp-for="Descripcion" class="form-control">
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
     </div>
     <div class="form-group mb-3">
-        <label asp-for="Price">Precio</label>
-        <input asp-for="Price" class="form-control">
+        <label asp-for="Precio">Precio</label>
+        <input asp-for="Precio" class="form-control">
+        <span asp-validation-for="Precio" class="text-danger"></span>
     </div>
     <div class="form-group mb-2">
         <button type="submit" class="btn btn-primary">Crear</button>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

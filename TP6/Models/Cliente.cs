@@ -1,4 +1,6 @@
-﻿namespace TP6.Models
+﻿using TP6.ViewModels;
+
+namespace TP6.Models
 {
     public class Cliente
     {
@@ -17,6 +19,13 @@
             this.nombre = nombre;
             this.email = email;
             this.telefono = telefono;
+        }
+
+        public Cliente(ClienteViewModel clienteVM)
+        {
+            nombre = clienteVM.Nombre;
+            email = clienteVM.Email;
+            telefono = clienteVM.Telefono;
         }
 
         public int IdCliente { get => idCliente; set => idCliente = value; }

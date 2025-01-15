@@ -36,7 +36,7 @@
 
             foreach (var det in detalle)
             {
-                monto += det.Producto.Price * det.Cantidad;
+                //monto += det.Producto.Price * det.Cantidad;
             }
 
             return monto;

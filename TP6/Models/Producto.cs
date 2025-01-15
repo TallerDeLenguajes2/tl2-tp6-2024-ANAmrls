@@ -3,14 +3,14 @@
     public class Producto
     {
         private int _idProduct;
-        private string description;
-        private int price;
+        private string description = "";
+        private decimal price;
 
         public Producto()
         {
         }
 
-        public Producto(int idProduct, string description, int price)
+        public Producto(int idProduct, string description, decimal price)
         {
             _idProduct = idProduct;
             this.description = description;
@@ -19,6 +19,6 @@
 
         public int IdProduct { get => _idProduct; set => _idProduct = value; }
         public string Description { get => description; set => description = value; }
-        public int Price { get => price; set => price = value; }
+        public decimal Price { get => price; set => price = value; }
     }
 }
