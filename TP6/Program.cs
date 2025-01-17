@@ -9,6 +9,7 @@ builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IPresupuestosRepository, PresupuestosRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IInMemoryUserRepository, InMemoryUserRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 // Habilitar servicios de sesiones
 builder.Services.AddSession(options =>
@@ -17,7 +18,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true; // Solo accesible desde HTTP, no JavaScript
     options.Cookie.IsEssential = true; // Necesario incluso si el usuario no acepta cookies
 });
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

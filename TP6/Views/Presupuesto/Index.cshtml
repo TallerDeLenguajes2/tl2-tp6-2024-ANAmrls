@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TP6.Models.Presupuesto>
+﻿ @model IEnumerable<TP6.Models.Presupuesto>
 @{
     ViewData["Title"] = "Listado de Presupuestos";
 }
@@ -24,7 +24,7 @@
             var fecha = DateOnly.FromDateTime(presupuesto.FechaCreacion);
             <tr>
                 <td>@presupuesto.IdPresupuesto</td>
-                <td>nombre cliente</td>
+                <td>@presupuesto.Cliente.Nombre</td>
                 <td>@fecha</td>
                 <td><a asp-controller="Presupuesto" asp-action="GetDetalle" asp-route-idPresupuesto="@presupuesto.IdPresupuesto" class="btn btn-info">Detalles</a></td>
                 <td><a asp-controller="Presupuesto" asp-action="AddProducto" asp-route-idPresupuesto="@presupuesto.IdPresupuesto" class="btn btn-info">Agregar</a></td>

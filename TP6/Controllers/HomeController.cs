@@ -15,6 +15,9 @@ namespace TP6.Controllers
 
         public IActionResult Index()
         {
+            var userName = Request.Cookies["AuthCookie"];
+            if (userName == null) 
+                return RedirectToAction("Index", "Login");
             return View();
         }
 

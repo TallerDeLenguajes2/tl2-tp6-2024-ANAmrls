@@ -39,7 +39,8 @@ namespace TP6.Repositorios
                 command.Parameters.Add(new SqliteParameter("@NuevoPrecio", producto.Price));
                 command.Parameters.Add(new SqliteParameter("@idProducto", idProducto));
 
-                command.ExecuteNonQuery();
+                var res = command.ExecuteNonQuery();
+                Console.WriteLine(res);
 
                 connection.Close();
             }

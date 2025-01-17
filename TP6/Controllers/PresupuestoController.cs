@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TP6.Filters;
 using TP6.Models;
 using TP6.Repositorios;
 using TP6.ViewModels;
@@ -18,12 +19,14 @@ namespace TP6.Controllers
             _clienteRepository = clienteRepository;
         }
 
+        [AccessLevelAuthorize("Administrador", "Cliente")]
         public ActionResult Index()
         {
             var presupuestos = _presupuestoRepository.GetPresupuestos();
             return View(presupuestos);
         }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpGet]
         public ActionResult CreatePresupuesto()
         {
@@ -32,6 +35,7 @@ namespace TP6.Controllers
             return View(presupuestoVM);
         }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreatePresupuesto(CreatePresupuestoViewModel presupuestoVM)
@@ -41,20 +45,29 @@ namespace TP6.Controllers
             return RedirectToAction("Index");
         }
 
-        //[HttpGet]
-        //public ActionResult EditPresupuesto(int idPresupuesto)
-        //{
-        //    return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
-        //}
+        [AccessLevelAuthorize("Administrador")]
+        [HttpGet]
+        public ActionResult EditPresupuesto(int idPresupuesto)
+        {
+            Presupuesto presupuesto = _presupuestoRepository.GetDetallePresupuestoById(idPresupuesto);
+            EditPresupuestoViewModel presupuestoVM = new(presupuesto, _clienteRepository.GetClientes());
+            return View(presupuestoVM);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EditPresupuesto(Presupuesto presupuesto)
-        //{
-        //    _presupuestoRepository.UpdatePresupuesto(presupuesto.IdPresupuesto, presupuesto);
-        //    return RedirectToAction("Index");
-        //}
+        [AccessLevelAuthorize("Administrador")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPresupuesto(EditPresupuestoViewModel presupuestoVM)
+        {
+            Presupuesto presupuesto = new(presupuestoVM.FechaCreacion, _clienteRepository.GetClienteById(presupuestoVM.IdCliente))
+            {
+                IdPresupuesto = presupuestoVM.IdPresupuesto
+            };
+            _presupuestoRepository.UpdatePresupuesto(presupuesto);
+            return RedirectToAction("Index");
+        }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpGet]
         public ActionResult AddProducto(int idPresupuesto)
         {
@@ -62,6 +75,7 @@ namespace TP6.Controllers
             return View(productoVM);
         }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddProducto(AddProductoViewModel addProductoVM)
@@ -73,6 +87,7 @@ namespace TP6.Controllers
             return RedirectToAction("AddProducto", _presupuestoRepository.GetPresupuestoById(addProductoVM.IdPresupuesto));
         }
 
+        [AccessLevelAuthorize("Administrador", "Cliente")]
         [HttpGet]
         public ActionResult GetDetalle(int idPresupuesto)
         {
@@ -80,17 +95,19 @@ namespace TP6.Controllers
 
             if (presupuesto.IdPresupuesto == 0)
             {
-                return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
+                return View(_presupuestoRepository.GetPresupuestoByIdConCliente(idPresupuesto));
             }
             return View(presupuesto);
         }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpGet]
         public ActionResult DeletePresupuesto(int idPresupuesto)
         {
             return View(_presupuestoRepository.GetPresupuestoById(idPresupuesto));
         }
 
+        [AccessLevelAuthorize("Administrador")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int idPresupuesto)

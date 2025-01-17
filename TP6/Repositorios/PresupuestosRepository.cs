@@ -33,7 +33,8 @@ namespace TP6.Repositorios
             {
                 connection.Open();
 
-                var consulta = @"SELECT * FROM Presupuestos;";
+                var consulta = "SELECT P.idPresupuesto, P.FechaCreacion, C.Nombre "
+                               + "FROM Presupuestos P JOIN Cliente C ON P.idCliente= C.idCliente;";
                 SqliteCommand command = new SqliteCommand(consulta, connection);
                 var reader = command.ExecuteReader();
                 while (reader.Read())
@@ -42,7 +43,10 @@ namespace TP6.Repositorios
                     {
                         IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]),
                         FechaCreacion = DateTime.Parse((string)reader["FechaCreacion"]),
+                        Cliente = new(),
                     };
+
+                    presupuesto.Cliente.Nombre = reader["Nombre"].ToString();
 
                     presupuestos.Add(presupuesto);
                 }
@@ -179,24 +183,58 @@ namespace TP6.Repositorios
             return presupuesto;
         }
 
-        //public void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto)
-        //{
-        //    using(var connection = new SqliteConnection(connectionString))
-        //    {
-        //        connection.Open();
+        public Presupuesto GetPresupuestoByIdConCliente(int idPresupuesto)
+        {
+            Presupuesto presupuesto = new();
 
-        //        var consulta = "UPDATE Presupuestos "
-        //                       + "SET NombreDestinatario = (@NuevoDestinatario) "
-        //                       + "WHERE idPresupuesto = (@idPresupuesto);";
-        //        SqliteCommand command =new SqliteCommand(consulta, connection);
-        //        command.Parameters.Add(new SqliteParameter("@NuevoDestinatario", presupuesto.NombreDestinatario));
-        //        command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
 
-        //        command.ExecuteNonQuery();
+                var consulta = "SELECT P.idPresupuesto, P.FechaCreacion, C.idCliente, C.Nombre, C.Email, C.Telefono "
+                               + "FROM Presupuestos P JOIN Cliente C ON P.idCliente= C.idCliente "
+                               + "WHERE P.idPresupuesto = (@idPresupuesto);";
 
-        //        connection.Close();
-        //    }
-        //}
+                SqliteCommand command = new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", idPresupuesto));
+                var reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
+                    presupuesto.FechaCreacion = DateTime.Parse((string)reader["FechaCreacion"]);
+                    presupuesto.Cliente = new(Convert.ToInt32(reader["idCliente"]),
+                                              reader["Nombre"].ToString(),
+                                              reader["Email"].ToString(),
+                                              reader["Telefono"].ToString());
+
+                }
+
+                connection.Close();
+            }
+
+            return presupuesto;
+        }
+
+        public void UpdatePresupuesto(Presupuesto presupuesto)
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+
+                var consulta = "UPDATE Presupuestos "
+                               + "SET idCliente = (@nuevoCliente) "
+                               + "WHERE idPresupuesto = (@idPresupuesto);";
+                SqliteCommand command = new SqliteCommand(consulta, connection);
+                command.Parameters.Add(new SqliteParameter("@nuevoCliente", presupuesto.Cliente.IdCliente));
+                command.Parameters.Add(new SqliteParameter("@idPresupuesto", presupuesto.IdPresupuesto));
+
+                var res = command.ExecuteNonQuery();
+                Console.WriteLine(res);
+
+                connection.Close();
+            }
+        }
 
         public void QuitarProducto(int idPresupuesto, int idProducto)
         {

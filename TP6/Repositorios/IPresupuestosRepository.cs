@@ -13,5 +13,7 @@ namespace TP6.Repositorios
         //void UpdatePresupuesto(int idPresupuesto, Presupuesto presupuesto);
         void QuitarProducto(int idPresupuesto, int idProducto);
         public int GetCantidadProducto(int idPresupuesto, int idProducto);
+        Presupuesto GetPresupuestoByIdConCliente(int idPresupuesto);
+        void UpdatePresupuesto(Presupuesto presupuesto);
     }
 }
