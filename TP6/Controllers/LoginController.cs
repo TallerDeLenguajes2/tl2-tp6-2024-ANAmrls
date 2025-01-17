@@ -7,55 +7,83 @@ namespace TP6.Controllers
 {
     public class LoginController : Controller
     {
-        //private readonly IInMemoryUserRepository _userRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly ILogger<LoginController> _logger;
 
-        public LoginController(IUsuarioRepository usuarioRepository)
+        public LoginController(IUsuarioRepository usuarioRepository, ILogger<LoginController> logger)
         {
             _usuarioRepository = usuarioRepository;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var model = new LoginViewModel
+            try
             {
-                IsAuthenticated = HttpContext.Session.GetString("IsAuthenticated") == "true",
-            };
-            return View(model);
+                var model = new LoginViewModel
+                {
+                    IsAuthenticated = HttpContext.Session.GetString("IsAuthenticated") == "true",
+                };
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                return BadRequest();
+            }
         }
 
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
-            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
+            try
             {
-                model.ErrorMessage = "Por favor ingrese su nombre de usuario y contraseña.";
+                if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
+                {
+                    model.ErrorMessage = "Por favor ingrese su nombre de usuario y contraseña.";
+                    return View("Index", model);
+                }
+
+                User usuario = _usuarioRepository.GetUser(model.Username, model.Password);
+
+                if (usuario.UserName != null)
+                {
+                    HttpContext.Session.SetString("IsAuthenticated", "true");
+                    HttpContext.Session.SetString("User", usuario.UserName);
+                    HttpContext.Session.SetString("AccessLevel", usuario.AccessLevel.ToString());
+
+                    _logger.LogInformation("El usuario " + usuario.UserName + "ingresó correctamente.");
+
+                    return RedirectToAction("Index", "Home");
+                }
+
+                model.ErrorMessage = "Credenciales inválidas";
+                model.IsAuthenticated = false;
+
+                _logger.LogWarning("Intento de acceso inválido - Usuario: " + model.Username + " - Clave ingresada: " + model.Password);
+
                 return View("Index", model);
             }
-
-            User usuario = _usuarioRepository.GetUser(model.Username, model.Password);
-
-            if (usuario.UserName != null)
+            catch (Exception ex)
             {
-                HttpContext.Session.SetString("IsAuthenticated", "true");
-                HttpContext.Session.SetString("User", usuario.UserName);
-                HttpContext.Session.SetString("AccessLevel", usuario.AccessLevel.ToString());
 
-                return RedirectToAction("Index", "Home");
+                _logger.LogError(ex.ToString());
+                return BadRequest();
             }
-
-            model.ErrorMessage = "Credenciales inválidas";
-            model.IsAuthenticated = false;
-            return View("Index", model);
         }
 
         public IActionResult Logout()
         {
-            // Limpiar la sesión
-            HttpContext.Session.Clear();
+            try
+            {
+                // Limpiar la sesión
+                HttpContext.Session.Clear();
 
-            // Redirigir a la vista de login
-            return RedirectToAction("Index");
+                // Redirigir a la vista de login
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex) { _logger.LogError(ex.ToString()); return BadRequest(); }
         }
     }
 }

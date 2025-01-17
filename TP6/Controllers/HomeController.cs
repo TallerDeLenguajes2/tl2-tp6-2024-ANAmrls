@@ -15,15 +15,28 @@ namespace TP6.Controllers
 
         public IActionResult Index()
         {
-            var userName = Request.Cookies["AuthCookie"];
-            if (userName == null) 
-                return RedirectToAction("Index", "Login");
-            return View();
+            try
+            {
+                var userName = Request.Cookies["AuthCookie"];
+                if (userName == null)
+                    return RedirectToAction("Index", "Login");
+                return View();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+                return BadRequest();
+            }
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex) { _logger.LogError(ex.ToString()); return BadRequest(); }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
